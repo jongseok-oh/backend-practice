@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ssafy.sample.dto.PageInfo;
+
 @WebServlet(loadOnStartup = 1, urlPatterns = {"*.do"})
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,11 +29,18 @@ public class MainServlet extends HttpServlet {
 		
 		String url = request.getServletPath();
 		
-		
+		System.out.println("url : " + url);
+
+		PageInfo pageInfo = null;
 		
 		if(url.startsWith("/product")) {
-			pController.ProductStateControll(request, response);
+			pageInfo = pController.ProductStateControll(request, response);
+			System.out.println("pControll");
 		}
 		
+		if(pageInfo != null) {
+			if(pageInfo.isForward()) request.getRequestDispatcher(pageInfo.getPage()).forward(request, response);
+			else response.sendRedirect(pageInfo.getPage());
+		}else response.sendRedirect(request.getContextPath()+"/error/error.jsp");
 	}
 }
