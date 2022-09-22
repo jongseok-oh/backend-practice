@@ -14,6 +14,7 @@ public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ProductController pController = new ProductController();
+	private UserController userController = new UserController();
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -35,7 +36,10 @@ public class MainServlet extends HttpServlet {
 		
 		if(url.startsWith("/product")) {
 			pageInfo = pController.ProductStateControll(request, response);
-			System.out.println("pControll");
+			System.out.println("pController");
+		}else if(url.startsWith("/user")) {
+			pageInfo = userController.UserStateControll(request, response);
+			System.out.println("userController");
 		}
 		
 		if(pageInfo != null) {

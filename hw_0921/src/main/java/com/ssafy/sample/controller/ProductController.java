@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ssafy.sample.dto.PageInfo;
 import com.ssafy.sample.dto.Product;
@@ -13,11 +14,16 @@ public class ProductController {
 	private ProductService productService = new ProductService();
 	
 	public PageInfo ProductStateControll(HttpServletRequest request, HttpServletResponse response) {
-		
+		HttpSession session = request.getSession();
 		String url = request.getServletPath();
 		PageInfo pageInfo = null;
 		
 		System.out.println("pControll url : " + url);
+		
+		if(session.getAttribute("userId") == null){
+			request.setAttribute("msg", "로그인 후 이용해 주세요!");
+			return new PageInfo(true,"/user/login.jsp");
+		}
 		
 		if(url.equals("/product/readAll.do")) {
 			pageInfo = readAll(request, response);
